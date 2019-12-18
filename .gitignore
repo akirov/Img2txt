@@ -11,3 +11,4 @@
 *.exe
 bin/
 build/
+doc/
