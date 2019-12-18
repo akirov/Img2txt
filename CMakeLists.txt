@@ -9,7 +9,8 @@ set (USE_OPENCV FALSE)
 # Set OpenCV installation location, if needed
 if (USE_OPENCV)
   if (MINGW)
-    set(OpenCV_DIR "D:/OpenCV/2.4.13.6/mingw530_32/install")
+    set(OpenCV_DIR "D:/OpenCV/3.4.5/mingw530_32/install")
+    #set(OpenCV_DIR "D:/OpenCV/2.4.13.6/mingw530_32/install")
     #set(OpenCV_DIR "D:/OpenCV/mingw/install")
   elseif (MSVC)
     #set(OpenCV_DIR "D:/OpenCV/2.4.13.6/vs2015/install")
@@ -26,6 +27,8 @@ if (MINGW)
   #set(Qt5Core_DIR "D:/Qt/Qt5.5.1/5.5/mingw492_32")
 elseif (MSVC)
   set(Qt5Core_DIR "D:/Qt/5.9.6/msvc2015_64")
+elseif (LINUX)
+  # 'CMAKE_PREFIX_PATH=/opt/Qt/5.9.8/gcc_64/lib/cmake cmake .'
 endif (MINGW)
 
 find_package (Qt5Core QUIET)
