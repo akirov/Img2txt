@@ -11,22 +11,26 @@ ToDo
 
 1. Detect text presence and position in images (segmentation).
 Options:
-- use sliding window technique and detect highly connected objects
-- train a neural network with augmented letters and digits with different font and on different backgrounds
+- use sliding (and rotating?) window technique and detect highly connected objects
+- or train a neural network to detect letters and digits presence and positions:
+  - create data set of augmented letters and digits with different font and on different backgrounds
+  - create "negative" data set without letters?
   - use YOLO as a library to get letters and digits bounding boxes
   - or implement a Convolutional Neural Network in Python (Tensorflow)
   - load the trained NN model with the OpenCV C++ API
-- detect other text features?
+- or detect other text features?
 
 2. Text segment pre-processing.
 - image enhancement
 - shadow removal?
-- proper rotation
+- proper rotation?
 
 3. Letter and digit recognition (classification).
 Options:
 - use Tessaract library
-- take the class directly from YOLO or the CNN
+- or take the class directly from YOLO or the CNN
 
 4. Display the results in the GUI.
-- cluster letters and digits in words and numbers based on bounding box centers
+Options:
+- cluster letters and digits in words and numbers based on bounding box centers (detect lines of centers)
+- or expand individual letter boxes and unite them when they overlap
