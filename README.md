@@ -9,7 +9,7 @@ CMake is used as a build system.
 ToDo
 ----
 
-1. Detect text presence and position in images (segmentation).
+1. Detect text presence and position in images (localization).
 Options:
 - use sliding (and rotating?) window technique and detect highly connected objects
 - or train a neural network to detect letters and digits presence and positions:
@@ -20,7 +20,7 @@ Options:
   - load the trained NN model with the OpenCV C++ API
 - or detect other text features?
 
-2. Text segment pre-processing.
+2. Text segmentation and pre-processing.
 - image enhancement
 - shadow removal?
 - proper rotation?
