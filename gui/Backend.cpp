@@ -21,7 +21,7 @@ QString Backend::launch(const QString &filename, QObject *imgContainer,
     qDebug() << "Backend::launch('filename=" << filename
              << "', option='" << option << "', txtToFind='" << txtToFind << "')";
 
-    QString result("OCR result");
+    QString result("OCR result");   // TODO!
     QUrl url(filename);
     QImage image(url.toLocalFile());
     if( image.isNull() )
@@ -30,9 +30,10 @@ QString Backend::launch(const QString &filename, QObject *imgContainer,
     }
     else
     {
-        // Call img2txt and get result
+        // Call img2txt and set result
         ImageContainer* container = (ImageContainer*) imgContainer;
-        container->setImage(image);
+        container->setImage(image);  // Or leave this to GUI? No, if we want to modify the image.
+        // Set also the TextArea on the right? No, the GUI will do it.
     }
     return result;
 }

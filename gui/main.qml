@@ -32,21 +32,22 @@ Window {
             FileDialog {
                 id: fileDialog
                 visible: fileDialogVisible.checked
-                title: fileDialogSelectFolder.checked ? "Choose a folder" :
-                    (fileDialogSelectMultiple.checked ? "Choose some files" : "Choose a file")
-                selectMultiple: fileDialogSelectMultiple.checked
-                selectFolder: fileDialogSelectFolder.checked
+                selectExisting: true
+                title: fileDialog.selectFolder ? "Choose a folder" :
+                    (fileDialog.selectMultiple ? "Choose some files" : "Choose a file")
+//              selectMultiple: fileDialogSelectMultiple.checked
+//              selectFolder: fileDialogSelectFolder.checked
+//              sidebarVisible: fileDialogSidebarVisible.checked
                 nameFilters: [ "Image files (*.png *.jpg)", "All files (*)" ]
                 selectedNameFilter: "Image files (*.png *.jpg)"
-                sidebarVisible: fileDialogSidebarVisible.checked
                 onAccepted: {
-                    console.log("Accepted: " + fileUrls)
-                    if (fileDialogSelectFolder.checked) {
+                    if (fileDialog.selectFolder) {
+                        console.log("Accepted: " + folder)
                         // Read directory contents
                     }
-                    if (fileDialogOpenFiles.checked) {
+                    else {
+                        console.log("Accepted: " + fileUrls)
                         for (var i = 0; i < fileUrls.length; ++i)
-                            // Send to backend?
                             filesModel.append({"filename" :fileUrls[i]})
                     }
                 }
@@ -69,20 +70,45 @@ Window {
                         font.bold: true
                         text: "Please Select Source:"
                     }
+
+                    ExclusiveGroup { id: srcBtnGroup }
+                    RadioButton {
+                        checked: true
+                        text: qsTr("Select Single File")
+                        exclusiveGroup: srcBtnGroup
+                        onClicked:{
+                            fileDialog.selectMultiple = false
+                            fileDialog.selectFolder = false
+                            // Restore name filters?
+                        }
+                    }
+                    RadioButton {
+                        text: qsTr("Select Multiple Files")
+                        exclusiveGroup: srcBtnGroup
+                        onClicked:{
+                            fileDialog.selectFolder = false
+                            fileDialog.selectMultiple = true
+                            // Restore name filters?
+                        }
+                    }
+                    RadioButton {
+                        text: qsTr("Select Folder")
+                        exclusiveGroup: srcBtnGroup
+                        onClicked:{
+                            fileDialog.selectMultiple = false
+                            fileDialog.selectFolder = true
+                        }
+                    }
+/*
                     CheckBox {
                         id: fileDialogSelectFolder
-                        text: "All Images in a Folder"
+                        text: "Select Folder"
                         Binding on checked { value: fileDialog.selectFolder }
                     }
                     CheckBox {
                         id: fileDialogSelectMultiple
-                        text: "Select Multiple Files"
+                        text: "Select Individual Files"
                         Binding on checked { value: fileDialog.selectMultiple }
-                    }
-                    CheckBox {
-                        id: fileDialogOpenFiles
-                        text: "Add Files After Accepting"
-                        checked: true
                     }
                     CheckBox {
                         id: fileDialogSidebarVisible
@@ -90,25 +116,31 @@ Window {
                         checked: fileDialog.sidebarVisible
                         Binding on checked { value: fileDialog.sidebarVisible }
                     }
+*/
+                    CheckBox {
+                        id: fileDialogOpenFiles
+                        text: "Add Files After Accepting"
+                        checked: true
+                    }
                     CheckBox {
                         id: fileDialogVisible
                         text: "Visible"
                         Binding on checked { value: fileDialog.visible }
                     }
                     Label {
-                        text: "<b>current view folder:</b> " + fileDialog.folder
+                        text: "<b>file name filters:</b> {" + fileDialog.nameFilters + "}"
                     }
                     Label {
-                        text: "<b>name filters:</b> {" + fileDialog.nameFilters + "}"
+                        text: "<b>current name filter:</b>" + fileDialog.selectedNameFilter
                     }
                     Label {
-                        text: "<b>current filter:</b>" + fileDialog.selectedNameFilter
+                        text: "<b>chosen file:</b> " + fileDialog.fileUrl
                     }
                     Label {
                         text: "<b>chosen files:</b> " + fileDialog.fileUrls
                     }
                     Label {
-                        text: "<b>chosen single path:</b> " + fileDialog.fileUrl
+                        text: "<b>chosen folder:</b> " + fileDialog.folder
                     }
                 }
             }
@@ -231,15 +263,17 @@ Window {
             spacing: 5
             Button{
                 id:startButton
-                text:qsTr("Start")
+                text:qsTr("OCR...")
                 default property int selectedRow: -1
                 onClicked:{
                     if (selectedRow == -1) {
                         console.log("Process: please selet an image")
                     } else {
                         console.log("Process: " + filesModel.get(selectedRow).filename)
+                        // TODO Get the option!
                         txt.text = backend.launch(filesModel.get(selectedRow).filename, imageContainer, -1, txtToFind.text)
                     }
+                    // Or process all images in a cycle?
                 }
             }
 
