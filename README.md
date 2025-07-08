@@ -27,6 +27,7 @@ Options:
 Options:
     - implement and train a CNN or vision transformer model in Python and load it from C++ for inference
     - take the class directly from YOLO
+    - train a SVM from OpenCV
 
 4. Display the results in the GUI.
 Options:
